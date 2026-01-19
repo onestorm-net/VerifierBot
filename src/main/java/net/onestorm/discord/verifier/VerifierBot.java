@@ -170,7 +170,7 @@ public class VerifierBot {
         Guild guild = event.getGuild();
 
         if (guild == null || guild.getIdLong() != guildId) {
-            event.reply("Error: Unsupported guild (try is again later)").setEphemeral(true).queue();
+            event.reply("Error: Unsupported guild (try it again later)").setEphemeral(true).queue();
             return;
         }
 
@@ -215,7 +215,7 @@ public class VerifierBot {
         Guild guild = event.getGuild();
 
         if (guild == null || guild.getIdLong() != guildId) {
-            event.reply("Error: Unsupported guild (try is again later)").setEphemeral(true).queue();
+            event.reply("Error: Unsupported guild (try it again later)").setEphemeral(true).queue();
             return;
         }
 
