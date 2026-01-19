@@ -144,7 +144,7 @@ public class VerifierBot {
         }
 
         guild.upsertCommand(createCommandData()).queue(
-            _ -> LOGGER.info("Command updated successfully!"),
+            ignored -> LOGGER.info("Command updated successfully!"),
             throwable -> LOGGER.warn("Failed to update command!", throwable)
         );
     }
@@ -255,7 +255,7 @@ public class VerifierBot {
         String errorType = null;
         try {
             guild.addRoleToMember(event.getUser(), memberRole).queue(
-                _ -> addRoleSuccess(event),
+                ignored -> addRoleSuccess(event),
                 throwable -> addRoleFailure(event, throwable)
             );
         } catch (InsufficientPermissionException e) {
@@ -298,7 +298,7 @@ public class VerifierBot {
         event.getHook().sendMessage("Error: Try verifying again later (" + error.name() + ")").setEphemeral(true).queue();
     }
 
-    static void main(String[] arguments) {
+    public static void main(String[] arguments) {
         boolean update = arguments.length > 0 && arguments[0].equalsIgnoreCase("--update-command");
         new VerifierBot(update);
     }
