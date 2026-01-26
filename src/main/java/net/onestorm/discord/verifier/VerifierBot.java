@@ -159,6 +159,7 @@ public class VerifierBot {
         return data;
     }
 
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public void onSlashCommand(SlashCommandInteractionEvent event) {
         Guild guild = event.getGuild();
@@ -236,6 +237,7 @@ public class VerifierBot {
         event.getHook().sendMessage("Error: Unable to send verify panel (" + error.name() + ")").setEphemeral(true).queue();
     }
 
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public void onButtonInteraction(ButtonInteractionEvent event) {
         Guild guild = event.getGuild();
