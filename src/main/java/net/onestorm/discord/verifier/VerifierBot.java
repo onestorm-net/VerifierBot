@@ -192,16 +192,48 @@ public class VerifierBot {
     }
 
     private void handleVerifyPanel(SlashCommandInteractionEvent event) {
+        event.deferReply(true).queue();
+
         EmbedBuilder builder = new EmbedBuilder();
         builder.setDescription("To get full access to our server click the button below to verify yourself!");
         builder.setColor(0x5865F2);
         MessageEmbed embed = builder.build();
 
+        String errorType = null;
+        try {
+            event.getChannel().sendMessageEmbeds(embed)
+                .addComponents(ActionRow.of(Button.primary("verify_me", "Verify")))
+                .queue(
+                    ignored -> sendMessageEmbedsSuccess(event),
+                    throwable -> sendMessageEmbedsFailure(event, throwable)
+                );
+        } catch (InsufficientPermissionException e) {
+            errorType = "INSUFFICIENT_PERMISSION";
+        } catch (Exception e) {
+            errorType = "EXCEPTION";
+            LOGGER.warn("sendMessageEmbeds threw an exception", e);
+        }
 
-        event.getChannel().sendMessageEmbeds(embed)
-            .addComponents(ActionRow.of(Button.primary("verify_me", "Verify")))
-            .queue();
-        event.reply("Verify panel created").setEphemeral(true).queue();
+        if (errorType != null) {
+            event.getHook().sendMessage("Error: Unable to send verify panel (" + errorType + ")").setEphemeral(true).queue();
+        }
+
+    }
+
+    private void sendMessageEmbedsSuccess(SlashCommandInteractionEvent event) {
+        event.getHook().sendMessage("Verify panel created!").setEphemeral(true).queue();
+    }
+
+    private void sendMessageEmbedsFailure(SlashCommandInteractionEvent event, Throwable throwable) {
+        LOGGER.warn("sending message embeds failed", throwable);
+
+        if (!(throwable instanceof ErrorResponseException exception)) {
+            event.getHook().sendMessage("Error: Unable to send verify panel (UNKNOWN)").setEphemeral(true).queue();
+            return;
+        }
+
+        ErrorResponse error = exception.getErrorResponse();
+        event.getHook().sendMessage("Error: Unable to send verify panel (" + error.name() + ")").setEphemeral(true).queue();
     }
 
     @SubscribeEvent
