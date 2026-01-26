@@ -153,16 +153,10 @@ public class VerifierBot {
         SlashCommandData data = Commands.slash("admin", "Admin command for verification.");
         data.setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
         data.addSubcommands(
-            createVerifyPanelSubcommandData()
+            new SubcommandData("verify-panel", "Sends a verify panel message")
         );
 
         return data;
-    }
-
-    private SubcommandData createVerifyPanelSubcommandData() {
-        String subcommandName = "verify-panel";
-        String subcommandDescription = "Sends a verify panel message";
-        return new SubcommandData(subcommandName, subcommandDescription);
     }
 
     @SubscribeEvent
