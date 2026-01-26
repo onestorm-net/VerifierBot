@@ -221,7 +221,7 @@ public class VerifierBot {
         }
 
         if (!name.equalsIgnoreCase("verify_me")) {
-            event.reply("Error: \"Error: Invalid button (UNKNOWN_ID)").setEphemeral(true).queue();
+            event.reply("Error: Invalid button (UNKNOWN_ID)").setEphemeral(true).queue();
             return;
         }
 
